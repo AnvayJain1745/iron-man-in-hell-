@@ -1,6 +1,7 @@
 var lifeThanos,lifeIronMan
-var Laser,laser
-var box1
+var Laser,laser, laserGroup
+var whiteBox
+var TBP=0
 var backGroundImage,BACKGROUND
 var thanosImage,thanos
 var ironMan,ironManLeft,ironManRight,ironManFly
@@ -32,6 +33,10 @@ function setup() {
   ironMan.scale=0.5
   ironMan.depth=3
 
+  whiteBox=createSprite(displayWidth/2+30,displayHeight/2,1100,50)
+  whiteBox.shapeColor="white"
+  whiteBox.visible=false
+
   comment1=createSprite(310,350);
   comment1.addImage("comment1",commentBoxImage1);
   comment1.lifetime=540
@@ -53,11 +58,6 @@ function setup() {
   trainingButton.scale=0.4
   trainingButton.depth=3
 
-  box1=createSprite(770,430,1400,850);
-  box1.addImage("box1",backGroundImage)
-  box1.depth=2
-  box1.visible=false
-
   BACKGROUND=createSprite(displayWidth/2,displayHeight/2)
   BACKGROUND.addImage("q",backGroundImage)
   BACKGROUND.depth=0
@@ -68,18 +68,25 @@ function setup() {
   
   lifeIronMan=createSprite(ironMan.x,ironMan.y-170,100,20)
   lifeIronMan.shapeColor="green";
-  console.log(ironMan.y)
-}
-
-function draw() {
   
-  background(1,1,1,1);
+
+  laserGroup = new Group();
+
   Laser=createSprite(ironMan.x-150,ironMan.y-70)
   Laser.addImage("laser",laser)
   Laser.visible=false
   Laser.scale=0.2
   
-console.log(thanos.width+ "," +thanos.height)
+  
+
+  laserGroup.add(Laser);
+}
+
+function draw() {
+  
+  background(1,1,1,1);
+ 
+//console.log(thanos.width+ "," +thanos.height)
 
 
   
@@ -96,9 +103,13 @@ console.log(thanos.width+ "," +thanos.height)
         
   }
 */
-if(Laser.isTouching(thanos)){
-  lifeThanos.width=lifeThanos.width-5
-  console.log("1")
+if(laserGroup.collide(thanos)){
+  if(lifeThanos.width >1){
+    lifeThanos.width=lifeThanos.width-1
+  }
+  
+  laserGroup.setLifetimeEach(3);
+ 
        }
   if(keyDown("UP_ARROW")){
     ironMan.addImage("IMI",ironManFly)
@@ -131,9 +142,15 @@ if(Laser.isTouching(thanos)){
    }
 
    if(keyDown("space")){
-Laser.visible=true
-Laser.velocityX=-7
+laserGroup.setVisibleEach(true);
+laserGroup.setVelocityXEach(-7)
 ironMan.addImage("IMI",ironManLeft)
+Laser=createSprite(ironMan.x-150,ironMan.y-70)
+  Laser.addImage("laser",laser)
+  Laser.visible=false
+  Laser.scale=0.2
+  
+  laserGroup.add(Laser);
    }
      if(ironMan.y>440 && ironMan.y<450){
       ironMan.velocityX=0
@@ -145,16 +162,28 @@ ironMan.addImage("IMI",ironManLeft)
   if(comment1.lifetime===1){
     comment2.visible=true;
   }
-  if(mousePressedOver(trainingButton) && comment2.lifetime<2 ){
-    box1.visible=true
-    text("press up arrow key to make Iron Man fly",200,300)
-    text("press down arrow key to make Iron Man come to ground after flying",250,300)
-    text("press left arrow key to move Iron Man left",300,300)
-    text("press right arrow key to move Iron Man right",350,300)
+  if(mousePressedOver(trainingButton)){
+    console.log(TBP)
+if(TBP===0){
+  TBP=1
+}else{
+  TBP=0
+}
   }
-  if(mousePressedOver(trainingButton) && box1.visible===true){
-
+  drawSprites()
+  if(TBP===1){
+   console.log("1111111111111111111111111111111")
+    text("press up arrow key to make Iron Man fly",500,300)
+    text("press down arrow key to make Iron Man come to ground after flying",500,350)
+    text("press left arrow key to move Iron Man left",500,400)
+    text("press right arrow key to move Iron Man right",500,450)
   }
- drawSprites()
- 
+  
+ if(lifeThanos.width===1){
+  thanos.visible=false
+  textFont("Georgia")
+  whiteBox.visible=true
+  textSize(30)
+  text("No ,this can't happen ,why this???why??? he have gone into the wormhole,no,no",displayWidth/2-500,displayHeight/2)
+}
 }
