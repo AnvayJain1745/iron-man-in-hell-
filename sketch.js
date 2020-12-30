@@ -5,7 +5,6 @@ var TBP=0
 var backGroundImage,BACKGROUND
 var thanosImage,thanos
 var ironMan,ironManLeft,ironManRight,ironManFly
-var characterButtonImage,characterButton
 var trainingButtonImage,trainingButton
 var commentBoxImage1,commentBoxImage2,commentBoxImage3,commentBoxImage4,commentBoxImage5,comment1,comment2,comment3,comment4,comment5;
 function preload(){
@@ -16,7 +15,7 @@ function preload(){
   ironManRight=loadImage("images/IR FR.png")
   commentBoxImage1=loadImage("images/commentBox1.png")
   commentBoxImage2=loadImage("images/commentBox2.png")
-  characterButtonImage=loadImage("images/characterButton.png")
+ 
   trainingButtonImage=loadImage("images/training.png")
   laser=loadImage("images/laser 2.png")
 
@@ -33,7 +32,7 @@ function setup() {
   ironMan.scale=0.5
   ironMan.depth=3
 
-  whiteBox=createSprite(displayWidth/2+30,displayHeight/2,1100,50)
+  whiteBox=createSprite(displayWidth/2+30,displayHeight/2,1100,100)
   whiteBox.shapeColor="white"
   whiteBox.visible=false
 
@@ -48,12 +47,9 @@ function setup() {
   comment2.scale=0.4 
   comment2.visible=false;
 
-  characterButton=createSprite(1450,50);
-  characterButton.addImage("characterButton",characterButtonImage);
-  characterButton.scale=0.4
-  characterButton.depth=3
+  
 
-  trainingButton=createSprite(1250,50);
+  trainingButton=createSprite(1425,50);
   trainingButton.addImage("trainingButton",trainingButtonImage);
   trainingButton.scale=0.4
   trainingButton.depth=3
@@ -91,18 +87,8 @@ function draw() {
 
   
 
-  if(mousePressedOver(characterButton)){
-    
-  }
- /* if(keyDown("LEFT_ARROW") && ironMan.y<570){
-    ironMan.velocityX=-1
-    
-  }
-  if(keyDown("RIGHT_ARROW") && ironMan.y<570){
-    ironMan.velocityX=1
-        
-  }
-*/
+ 
+ 
 if(laserGroup.collide(thanos)){
   if(lifeThanos.width >1){
     lifeThanos.width=lifeThanos.width-1
@@ -152,27 +138,19 @@ Laser=createSprite(ironMan.x-150,ironMan.y-70)
   
   laserGroup.add(Laser);
    }
-     if(ironMan.y>440 && ironMan.y<450){
-      ironMan.velocityX=0
-      ironMan.velocityY=0
-      ironMan.addImage("IMI",ironManLeft)
-     }
+    
 
      
   if(comment1.lifetime===1){
     comment2.visible=true;
   }
-  if(mousePressedOver(trainingButton)){
-    console.log(TBP)
-if(TBP===0){
-  TBP=1
-}else{
-  TBP=0
-}
-  }
-  drawSprites()
+
+
+  drawSprites() 
   if(TBP===1){
-   console.log("1111111111111111111111111111111")
+   console.log("11")
+   textSize(20)
+   fill("black")
     text("press up arrow key to make Iron Man fly",500,300)
     text("press down arrow key to make Iron Man come to ground after flying",500,350)
     text("press left arrow key to move Iron Man left",500,400)
@@ -184,6 +162,19 @@ if(TBP===0){
   textFont("Georgia")
   whiteBox.visible=true
   textSize(30)
-  text("No ,this can't happen ,why this???why??? he have gone into the wormhole,no,no",displayWidth/2-500,displayHeight/2)
+  
+  text("No ,this can't happen ,why this???why??? he have gone into the wormhole,no,no.",displayWidth/2-500,displayHeight/2)
+  text("you,should rest and wait for thanos to return",displayWidth/2-500,displayHeight/2+40)
 }
+}
+
+function mouseClicked(){
+  var d=dist(mouseX,mouseY,trainingButton.x,trainingButton.y);
+  if(d<trainingButton.height){
+    if(TBP===0){
+      TBP=1
+    }else{
+      TBP=0
+    }
+  }
 }
